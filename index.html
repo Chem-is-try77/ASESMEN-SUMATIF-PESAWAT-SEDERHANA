@@ -144,6 +144,10 @@
                 box-shadow: none !important;
                 border: 1px solid #ddd;
             }
+            /* Menampilkan feedback saat print */
+            .feedback-msg {
+                display: inline-block !important;
+            }
         }
     </style>
 </head>
@@ -199,7 +203,7 @@
         </section>
 
         <!-- KATEGORI 1: Isian Singkat -->
-        <section class="p-6 border-b border-gray-200">
+        <section class="p-6 border-b border-gray-200" id="cat1">
             <div class="flex items-center mb-4">
                 <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">1</span>
                 <h2 class="text-xl font-bold text-gray-800">Pemahaman Konsep (Isian Singkat)</h2>
@@ -208,45 +212,65 @@
             
             <div class="grid grid-cols-1 gap-4">
                 <!-- Soal 1-10 -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">1. Tuas yang titik tumpunya berada di antara beban dan kuasa termasuk golongan...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="1,satu,pertama,i" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">2. Jarak tegak lurus antara titik tumpu dengan gaya kuasa disebut...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="lengan kuasa,lk" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">3. Alat yang digunakan untuk mempermudah melakukan usaha disebut...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="pesawat sederhana" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">4. Pada Tuas Golongan I, bagian yang berada di tengah adalah...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="titik tumpu,tumpu" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">5. Berapakah Keuntungan Mekanis (KM) dari sebuah katrol tetap?</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="1,satu" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">6. Katrol yang posisinya ikut berpindah saat digunakan mengangkat beban disebut...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="katrol bergerak,katrol bebas" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">7. Jalan berkelok-kelok di pegunungan menerapkan prinsip pesawat sederhana jenis...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="bidang miring" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">8. Setir mobil dan roda sepeda adalah contoh dari prinsip...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="roda berporos,roda,roda gigi" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">9. Perbandingan antara beban (W) dengan kuasa (F) disebut...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="keuntungan mekanis,km" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200 relative group">
                     <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">10. Bagian tuas tempat bekerjanya gaya yang kita berikan disebut...</label>
-                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                    <div class="w-full md:w-1/3 relative">
+                        <input type="text" data-key="kuasa,titik kuasa,gaya kuasa" class="w-full p-2 border border-gray-300 rounded answer-input">
+                    </div>
                 </div>
             </div>
         </section>
@@ -254,7 +278,7 @@
         <div class="page-break"></div>
 
         <!-- KATEGORI 2: Hitungan -->
-        <section class="p-6 border-b border-gray-200">
+        <section class="p-6 border-b border-gray-200" id="cat2">
             <div class="flex items-center mb-4">
                 <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">2</span>
                 <h2 class="text-xl font-bold text-gray-800">Analisis Matematis (Hitungan)</h2>
@@ -263,83 +287,83 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Soal 1 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">1. Menghitung KM Tuas</p>
                     <p class="text-sm text-gray-600 mb-3">Sebuah tuas mengangkat beban 1000 N. Jika gaya kuasa yang dibutuhkan adalah 200 N, berapakah Keuntungan Mekanisnya?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="5" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 2 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">2. Gaya pada Katrol Bergerak</p>
                     <p class="text-sm text-gray-600 mb-3">Benda seberat 500 N diangkat menggunakan satu buah katrol bergerak. Berapakah gaya tarik minimal yang dibutuhkan?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="250" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 3 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">3. Tuas (Mencari Kuasa)</p>
                     <p class="text-sm text-gray-600 mb-3">Sebuah batu seberat 600 N akan diungkit. Jika Lengan Beban (Lb) = 1 m dan Lengan Kuasa (Lk) = 2 m. Berapa gaya tekan yang dibutuhkan?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="300" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 4 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">4. KM Tuas</p>
                     <p class="text-sm text-gray-600 mb-3">Jika panjang lengan kuasa 150 cm dan lengan beban 50 cm. Berapakah Keuntungan Mekanis tuas tersebut?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="3" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 5 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">5. Bidang Miring (Gaya)</p>
                     <p class="text-sm text-gray-600 mb-3">Peti 400 N akan dinaikkan ke truk setinggi 2 m menggunakan papan miring sepanjang 4 m. Berapa gaya dorong minimal?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="200" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 6 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">6. KM Bidang Miring</p>
                     <p class="text-sm text-gray-600 mb-3">Sebuah bidang miring memiliki panjang lintasan (s) = 6 meter dan tinggi (h) = 2 meter. Berapa keuntungan mekanisnya?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="3" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 7 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">7. Katrol Bergerak</p>
                     <p class="text-sm text-gray-600 mb-3">Beban seberat 100 N diangkat menggunakan satu katrol bergerak. Berapa gaya kuasa yang diperlukan?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="50" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 8 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">8. Katrol Majemuk</p>
                     <p class="text-sm text-gray-600 mb-3">Sistem katrol majemuk tersusun dari 4 tali yang menopang beban. Jika beban 800 N, berapa gaya kuasanya?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="200" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 9 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">9. Gaya Dorong (Bidang Miring)</p>
                     <p class="text-sm text-gray-600 mb-3">Peti beratnya 1.500 N dipindahkan ke truk setinggi 3 m menggunakan papan sepanjang 5 m. Berapa gaya dorongnya?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="900" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
 
                 <!-- Soal 10 -->
-                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white relative">
                     <p class="font-semibold mb-2">10. Logika Tuas</p>
                     <p class="text-sm text-gray-600 mb-3">Jika titik tumpu digeser mendekati beban, maka gaya kuasa yang dibutuhkan akan menjadi... (Lebih besar / Lebih kecil)?</p>
                     <label class="text-xs text-gray-500">Jawaban:</label>
-                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                    <input type="text" data-key="lebih kecil,kecil" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600 answer-input" placeholder="...">
                 </div>
             </div>
         </section>
@@ -347,7 +371,7 @@
         <div class="page-break"></div>
 
         <!-- KATEGORI 3: Menjodohkan -->
-        <section class="p-6 border-b border-gray-200">
+        <section class="p-6 border-b border-gray-200" id="cat3">
             <div class="flex items-center mb-4">
                 <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">3</span>
                 <h2 class="text-xl font-bold text-gray-800">Menjodohkan (Matching)</h2>
@@ -368,8 +392,8 @@
                         <tr>
                             <td class="p-3 border border-gray-200 text-center font-bold">1</td>
                             <td class="p-3 border border-gray-200">Gunting Kertas</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Tuas 1" class="w-full p-2 bg-gray-50 border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 1">Tuas Golongan 1 (Tumpu di tengah)</option>
                                     <option value="Tuas 2">Tuas Golongan 2 (Beban di tengah)</option>
@@ -384,8 +408,8 @@
                         <tr class="bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center font-bold">2</td>
                             <td class="p-3 border border-gray-200">Gerobak Pasir Roda Satu</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Tuas 2" class="w-full p-2 bg-white border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 1">Tuas Golongan 1</option>
                                     <option value="Tuas 2">Tuas Golongan 2</option>
@@ -399,8 +423,8 @@
                         <tr>
                             <td class="p-3 border border-gray-200 text-center font-bold">3</td>
                             <td class="p-3 border border-gray-200">Sekrup / Mur Baut</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Bidang Miring" class="w-full p-2 bg-gray-50 border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 1">Tuas Golongan 1</option>
                                     <option value="Bidang Miring">Bidang Miring</option>
@@ -412,8 +436,8 @@
                         <tr class="bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center font-bold">4</td>
                             <td class="p-3 border border-gray-200">Mengerek Bendera</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Katrol Tetap" class="w-full p-2 bg-white border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Bidang Miring">Bidang Miring</option>
                                     <option value="Katrol Tetap">Katrol Tetap</option>
@@ -425,8 +449,8 @@
                         <tr>
                             <td class="p-3 border border-gray-200 text-center font-bold">5</td>
                             <td class="p-3 border border-gray-200">Pinset / Penjepit Gorengan</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Tuas 3" class="w-full p-2 bg-gray-50 border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 2">Tuas Golongan 2</option>
                                     <option value="Tuas 3">Tuas Golongan 3</option>
@@ -438,8 +462,8 @@
                         <tr class="bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center font-bold">6</td>
                             <td class="p-3 border border-gray-200">Tangga Rumah</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Bidang Miring" class="w-full p-2 bg-white border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas">Tuas</option>
                                     <option value="Bidang Miring">Bidang Miring</option>
@@ -451,8 +475,8 @@
                         <tr>
                             <td class="p-3 border border-gray-200 text-center font-bold">7</td>
                             <td class="p-3 border border-gray-200">Mobil Derek (Crane)</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Katrol Majemuk" class="w-full p-2 bg-gray-50 border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Katrol Tetap">Katrol Tetap</option>
                                     <option value="Katrol Majemuk">Katrol Majemuk</option>
@@ -464,8 +488,8 @@
                         <tr class="bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center font-bold">8</td>
                             <td class="p-3 border border-gray-200">Pembuka Tutup Botol</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Tuas 2" class="w-full p-2 bg-white border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 1">Tuas Golongan 1</option>
                                     <option value="Tuas 2">Tuas Golongan 2</option>
@@ -477,8 +501,8 @@
                         <tr>
                             <td class="p-3 border border-gray-200 text-center font-bold">9</td>
                             <td class="p-3 border border-gray-200">Setir Kendaraan</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Roda Berporos" class="w-full p-2 bg-gray-50 border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Roda Berporos">Roda Berporos</option>
                                     <option value="Katrol">Katrol</option>
@@ -490,8 +514,8 @@
                         <tr class="bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center font-bold">10</td>
                             <td class="p-3 border border-gray-200">Cangkul</td>
-                            <td class="p-3 border border-gray-200">
-                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                            <td class="p-3 border border-gray-200 relative">
+                                <select data-key="Tuas 3" class="w-full p-2 bg-white border border-gray-300 rounded answer-select">
                                     <option value="">-- Pilih Jawaban --</option>
                                     <option value="Tuas 1">Tuas Golongan 1</option>
                                     <option value="Tuas 2">Tuas Golongan 2</option>
@@ -507,7 +531,7 @@
         <div class="page-break"></div>
 
         <!-- KATEGORI 4: Flip Cards (Benar/Salah) -->
-        <section class="p-6">
+        <section class="p-6" id="cat4">
             <div class="flex items-center mb-4">
                 <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">4</span>
                 <h2 class="text-xl font-bold text-gray-800">Kartu Analisis (Benar/Salah)</h2>
@@ -517,7 +541,7 @@
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <!-- Card 1 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -531,7 +555,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -539,7 +563,7 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -553,7 +577,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Salah" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -561,7 +585,7 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -575,7 +599,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -583,7 +607,7 @@
                 </div>
 
                 <!-- Card 4 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -597,7 +621,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -605,7 +629,7 @@
                 </div>
 
                 <!-- Card 5 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -619,7 +643,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Salah" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -627,7 +651,7 @@
                 </div>
 
                 <!-- Card 6 -->
-                <div class="flex flex-col">
+                <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -641,7 +665,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -649,7 +673,7 @@
                 </div>
 
                  <!-- Card 7 -->
-                 <div class="flex flex-col">
+                 <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -663,7 +687,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Salah" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -671,7 +695,7 @@
                 </div>
 
                  <!-- Card 8 -->
-                 <div class="flex flex-col">
+                 <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -685,7 +709,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -693,7 +717,7 @@
                 </div>
 
                  <!-- Card 9 -->
-                 <div class="flex flex-col">
+                 <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -707,7 +731,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Benar" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -715,7 +739,7 @@
                 </div>
 
                  <!-- Card 10 -->
-                 <div class="flex flex-col">
+                 <div class="flex flex-col relative">
                     <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
@@ -729,7 +753,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                    <select data-key="Salah" class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50 answer-select">
                         <option value="">- Jawab -</option>
                         <option value="Benar">Benar</option>
                         <option value="Salah">Salah</option>
@@ -738,24 +762,40 @@
             </div>
         </section>
 
+        <!-- Score Section (Hidden by default, shown on grade) -->
+        <section id="score-section" class="p-6 bg-blue-100 hidden border-t-2 border-blue-300 print:block">
+            <h2 class="text-2xl font-bold text-center text-blue-900 mb-2">HASIL PENILAIAN</h2>
+            <div class="flex justify-center items-center space-x-8">
+                <div class="text-center">
+                    <p class="text-sm font-semibold text-gray-600">Jawaban Benar</p>
+                    <p id="correct-count" class="text-3xl font-bold text-green-600">0</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-sm font-semibold text-gray-600">Nilai Akhir</p>
+                    <p id="final-score" class="text-5xl font-bold text-blue-800">0</p>
+                </div>
+            </div>
+            <p class="text-center text-xs text-gray-500 mt-2">Nilai = (Benar / 40) x 100</p>
+        </section>
+
         <!-- Footer / Print Action -->
         <footer class="p-6 bg-gray-100 text-center no-print border-t border-gray-200">
             <p class="mb-4 text-gray-600">Pastikan semua jawaban telah terisi sebelum menyimpan.</p>
-            <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg flex items-center justify-center mx-auto transition-all">
-                <i class="fas fa-file-pdf mr-2"></i> Simpan sebagai PDF / Cetak
+            <button onclick="gradeAndPrint()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg flex items-center justify-center mx-auto transition-all">
+                <i class="fas fa-check-circle mr-2"></i> Koreksi & Simpan PDF
             </button>
-            <p class="mt-2 text-xs text-gray-500">Pilih "Save as PDF" pada menu Destination saat jendela print terbuka.</p>
+            <p class="mt-2 text-xs text-gray-500">Hasil koreksi otomatis akan muncul pada file PDF yang diunduh.</p>
         </footer>
 
         <!-- Hidden signature area for print only -->
-        <div class="hidden print:block mt-10 px-8 pb-8">
-            <div class="flex justify-between mt-12">
+        <div class="hidden print:block mt-6 px-8 pb-8">
+            <div class="flex justify-between mt-8">
                 <div class="text-center w-1/3">
-                    <p class="mb-16">Nilai</p>
-                    <div class="border-t border-black w-1/2 mx-auto"></div>
+                    <p class="mb-12">Orang Tua / Wali</p>
+                    <div class="border-t border-black w-2/3 mx-auto"></div>
                 </div>
                 <div class="text-center w-1/3">
-                    <p class="mb-16">Guru IPA</p>
+                    <p class="mb-12">Guru IPA</p>
                     <div class="border-t border-black w-2/3 mx-auto"></div>
                 </div>
             </div>
@@ -866,6 +906,108 @@
                 lockScreen(unlockTime);
             }
         });
+
+        // --- GRADING FUNCTION ---
+        function gradeAndPrint() {
+            // Remove previous marks
+            document.querySelectorAll('.feedback-msg').forEach(e => e.remove());
+            
+            let totalCorrect = 0;
+            const totalQuestions = 40; // Total soal
+
+            // Grade Inputs (Text & Number)
+            const inputs = document.querySelectorAll('.answer-input');
+            inputs.forEach(input => {
+                const userVal = input.value.trim().toLowerCase();
+                const correctKeys = input.getAttribute('data-key').toLowerCase().split(',');
+                const parent = input.parentElement;
+
+                let isCorrect = false;
+                
+                // Cek jika angka (untuk hitungan), hapus spasi dan bandingkan
+                if (!isNaN(userVal) && userVal !== '') {
+                     if (correctKeys.includes(userVal)) isCorrect = true;
+                } else {
+                    // Cek string
+                     if (correctKeys.includes(userVal)) isCorrect = true;
+                }
+
+                const msg = document.createElement('span');
+                msg.classList.add('feedback-msg', 'absolute', 'right-0', 'top-0', 'mt-2', 'mr-[-30px]', 'text-xl', 'font-bold');
+
+                if (isCorrect) {
+                    msg.innerHTML = '<span class="text-green-600">✓</span>';
+                    input.classList.add('border-green-500', 'bg-green-50');
+                    totalCorrect++;
+                } else {
+                    msg.innerHTML = '<span class="text-red-600">✗</span>';
+                    // Tambahkan teks kunci jawaban
+                    const keyDisplay = document.createElement('div');
+                    keyDisplay.classList.add('feedback-msg', 'text-xs', 'text-red-600', 'mt-1', 'font-semibold');
+                    keyDisplay.innerText = `Jwb: ${input.getAttribute('data-key').split(',')[0]}`;
+                    parent.appendChild(keyDisplay);
+                    
+                    input.classList.add('border-red-500', 'bg-red-50');
+                }
+                parent.appendChild(msg);
+            });
+
+            // Grade Selects
+            const selects = document.querySelectorAll('.answer-select');
+            selects.forEach(select => {
+                const userVal = select.value;
+                const correctKey = select.getAttribute('data-key');
+                const parent = select.parentElement;
+
+                const msg = document.createElement('span');
+                msg.classList.add('feedback-msg', 'absolute', 'right-0', 'top-0', 'mt-2', 'mr-2', 'text-xl', 'font-bold', 'pointer-events-none');
+                
+                // Adjust position specifically for flip card selects
+                if(parent.classList.contains('flex-col')) {
+                     msg.classList.remove('absolute');
+                     msg.classList.add('inline-block', 'ml-2');
+                }
+
+                if (userVal === correctKey) {
+                    msg.innerHTML = '<span class="text-green-600">✓</span>';
+                    select.classList.add('border-green-500', 'bg-green-50');
+                    totalCorrect++;
+                } else {
+                    msg.innerHTML = '<span class="text-red-600">✗</span>';
+                     // Tambahkan teks kunci jawaban (Khusus Menjodohkan yang punya ruang)
+                    if(select.options.length > 3) { // Deteksi dropdown menjodohkan
+                        const keyDisplay = document.createElement('div');
+                        keyDisplay.classList.add('feedback-msg', 'text-xs', 'text-red-600', 'mt-1', 'font-semibold');
+                        keyDisplay.innerText = `Jwb: ${correctKey}`;
+                        parent.appendChild(keyDisplay);
+                    }
+                    select.classList.add('border-red-500', 'bg-red-50');
+                }
+                
+                // Insert after select
+                if(select.nextSibling) {
+                    parent.insertBefore(msg, select.nextSibling);
+                } else {
+                    parent.appendChild(msg);
+                }
+            });
+
+            // Update Score Section
+            const scoreSection = document.getElementById('score-section');
+            scoreSection.classList.remove('hidden');
+            document.getElementById('correct-count').innerText = totalCorrect + " / " + totalQuestions;
+            
+            const score = (totalCorrect / totalQuestions) * 100;
+            document.getElementById('final-score').innerText = Math.round(score);
+
+            // Scroll to bottom to see score
+            scoreSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Trigger Print after short delay to allow DOM updates
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        }
 
     </script>
 </body>
