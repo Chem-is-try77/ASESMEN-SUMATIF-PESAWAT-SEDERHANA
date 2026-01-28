@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Sumatif: Pesawat Sederhana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-print-color-adjust: exact;
+            user-select: none; /* Mencegah copy-paste */
+        }
+
+        .category-header {
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        /* Styles for Flip Cards */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            cursor: pointer;
+            height: 120px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+        }
+
+        .flip-card.active .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .flip-card-front {
+            background-color: #ffffff;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .flip-card-back {
+            background-color: #eff6ff;
+            color: #1e40af;
+            transform: rotateY(180deg);
+            font-size: 0.9rem;
+        }
+
+        /* LOCK OVERLAY STYLE */
+        #lock-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ef4444; /* Red-500 */
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: white;
+                user-select: auto;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #lock-overlay {
+                display: none !important; /* Jangan cetak layar error */
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            input, select, textarea {
+                border: 1px solid #000 !important;
+                background: none !important;
+                color: black !important;
+                box-shadow: none !important;
+            }
+            /* Expand cards for printing */
+            .flip-card {
+                height: auto;
+                perspective: none;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+            }
+            .flip-card-inner {
+                transform: none !important;
+                box-shadow: none;
+                display: block;
+                height: auto;
+            }
+            .flip-card-front, .flip-card-back {
+                position: relative;
+                width: 100%;
+                height: auto;
+                display: block;
+                backface-visibility: visible;
+                transform: none;
+                text-align: left;
+                padding: 5px;
+                border: none;
+            }
+            .flip-card-back {
+                background-color: transparent;
+                color: black;
+                border-top: 1px dashed #ccc;
+                margin-top: 5px;
+                padding-top: 5px;
+            }
+            .bg-white {
+                box-shadow: none !important;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8" onclick="initAudio()">
+
+    <!-- LOCK SCREEN OVERLAY -->
+    <div id="lock-overlay">
+        <i class="fas fa-exclamation-triangle text-6xl mb-4 text-yellow-300 animate-bounce"></i>
+        <h1 class="text-4xl font-bold mb-2 uppercase">PERINGATAN!</h1>
+        <p class="text-xl mb-6 max-w-lg">Anda terdeteksi meninggalkan halaman ujian. Akses Anda dikunci sementara.</p>
+        <div class="bg-white text-red-600 px-6 py-4 rounded-xl text-3xl font-mono font-bold shadow-lg">
+            <span id="countdown">03:00</span>
+        </div>
+        <p class="mt-4 text-sm opacity-80">Jangan mencoba refresh, waktu akan tetap berjalan.</p>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden print:shadow-none print:w-full">
+        
+        <!-- Header -->
+        <header class="bg-blue-800 text-white p-6 print:bg-white print:text-black print:border-b-2 print:border-black">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold uppercase tracking-wider">Asesmen Sumatif IPA</h1>
+                    <p class="text-blue-200 print:text-gray-600">Materi: Pesawat Sederhana</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-semibold">Kelas 8</p>
+                    <p class="text-sm">SMP YPS SINGKOLE</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Student Info -->
+        <section class="p-6 bg-blue-50 border-b border-blue-100 print:bg-white">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap Siswa</label>
+                    <input type="text" placeholder="Tulis nama lengkap..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Pilih Kelas</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                        <option value="" disabled selected>-- Pilih Kelas --</option>
+                        <option value="8 Creative">8 Creative</option>
+                        <option value="8 Independent">8 Independent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800 no-print">
+                <i class="fas fa-shield-alt mr-2 text-lg"></i>
+                <span><strong>Sistem Anti-Cheat Aktif:</strong> Jangan berpindah tab atau keluar dari browser, atau akses Anda akan terkunci otomatis.</span>
+            </div>
+        </section>
+
+        <!-- KATEGORI 1: Isian Singkat -->
+        <section class="p-6 border-b border-gray-200">
+            <div class="flex items-center mb-4">
+                <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">1</span>
+                <h2 class="text-xl font-bold text-gray-800">Pemahaman Konsep (Isian Singkat)</h2>
+            </div>
+            <p class="mb-4 text-gray-600">Jawablah pertanyaan berikut dengan singkat dan tepat mengenai Pesawat Sederhana.</p>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Soal 1-10 -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">1. Tuas yang titik tumpunya berada di antara beban dan kuasa termasuk golongan...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">2. Jarak tegak lurus antara titik tumpu dengan gaya kuasa disebut...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">3. Alat yang digunakan untuk mempermudah melakukan usaha disebut...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">4. Pada Tuas Golongan I, bagian yang berada di tengah adalah...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">5. Berapakah Keuntungan Mekanis (KM) dari sebuah katrol tetap?</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">6. Katrol yang posisinya ikut berpindah saat digunakan mengangkat beban disebut...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">7. Jalan berkelok-kelok di pegunungan menerapkan prinsip pesawat sederhana jenis...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">8. Setir mobil dan roda sepeda adalah contoh dari prinsip...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 p-3 rounded print:bg-white print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">9. Perbandingan antara beban (W) dengan kuasa (F) disebut...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-3 rounded print:border print:border-gray-200">
+                    <label class="w-full md:w-2/3 mb-2 md:mb-0 text-gray-700">10. Bagian tuas tempat bekerjanya gaya yang kita berikan disebut...</label>
+                    <input type="text" class="w-full md:w-1/3 p-2 border border-gray-300 rounded">
+                </div>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- KATEGORI 2: Hitungan -->
+        <section class="p-6 border-b border-gray-200">
+            <div class="flex items-center mb-4">
+                <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">2</span>
+                <h2 class="text-xl font-bold text-gray-800">Analisis Matematis (Hitungan)</h2>
+            </div>
+            <p class="mb-4 text-gray-600">Hitunglah soal berikut. Tuliskan jawaban akhir beserta satuannya (Contoh: 50 N).</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Soal 1 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">1. Menghitung KM Tuas</p>
+                    <p class="text-sm text-gray-600 mb-3">Sebuah tuas mengangkat beban 1000 N. Jika gaya kuasa yang dibutuhkan adalah 200 N, berapakah Keuntungan Mekanisnya?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">2. Gaya pada Katrol Bergerak</p>
+                    <p class="text-sm text-gray-600 mb-3">Benda seberat 500 N diangkat menggunakan satu buah katrol bergerak. Berapakah gaya tarik minimal yang dibutuhkan?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">3. Tuas (Mencari Kuasa)</p>
+                    <p class="text-sm text-gray-600 mb-3">Sebuah batu seberat 600 N akan diungkit. Jika Lengan Beban (Lb) = 1 m dan Lengan Kuasa (Lk) = 2 m. Berapa gaya tekan yang dibutuhkan?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">4. KM Tuas</p>
+                    <p class="text-sm text-gray-600 mb-3">Jika panjang lengan kuasa 150 cm dan lengan beban 50 cm. Berapakah Keuntungan Mekanis tuas tersebut?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">5. Bidang Miring (Gaya)</p>
+                    <p class="text-sm text-gray-600 mb-3">Peti 400 N akan dinaikkan ke truk setinggi 2 m menggunakan papan miring sepanjang 4 m. Berapa gaya dorong minimal?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 6 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">6. KM Bidang Miring</p>
+                    <p class="text-sm text-gray-600 mb-3">Sebuah bidang miring memiliki panjang lintasan (s) = 6 meter dan tinggi (h) = 2 meter. Berapa keuntungan mekanisnya?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 7 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">7. Katrol Bergerak</p>
+                    <p class="text-sm text-gray-600 mb-3">Beban seberat 100 N diangkat menggunakan satu katrol bergerak. Berapa gaya kuasa yang diperlukan?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 8 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">8. Katrol Majemuk</p>
+                    <p class="text-sm text-gray-600 mb-3">Sistem katrol majemuk tersusun dari 4 tali yang menopang beban. Jika beban 800 N, berapa gaya kuasanya?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 9 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">9. Gaya Dorong (Bidang Miring)</p>
+                    <p class="text-sm text-gray-600 mb-3">Peti beratnya 1.500 N dipindahkan ke truk setinggi 3 m menggunakan papan sepanjang 5 m. Berapa gaya dorongnya?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+
+                <!-- Soal 10 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 print:bg-white">
+                    <p class="font-semibold mb-2">10. Logika Tuas</p>
+                    <p class="text-sm text-gray-600 mb-3">Jika titik tumpu digeser mendekati beban, maka gaya kuasa yang dibutuhkan akan menjadi... (Lebih besar / Lebih kecil)?</p>
+                    <label class="text-xs text-gray-500">Jawaban:</label>
+                    <input type="text" class="w-full p-2 border-b-2 border-blue-200 bg-transparent focus:outline-none focus:border-blue-600" placeholder="...">
+                </div>
+            </div>
+        </section>
+        
+        <div class="page-break"></div>
+
+        <!-- KATEGORI 3: Menjodohkan -->
+        <section class="p-6 border-b border-gray-200">
+            <div class="flex items-center mb-4">
+                <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">3</span>
+                <h2 class="text-xl font-bold text-gray-800">Menjodohkan (Matching)</h2>
+            </div>
+            <p class="mb-4 text-gray-600">Pasangkan alat/kegiatan di kolom kiri dengan prinsip pesawat sederhana yang sesuai di kolom kanan (pilih dari dropdown).</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-blue-100 text-blue-800">
+                            <th class="p-3 border border-blue-200 w-1/12 text-center">No</th>
+                            <th class="p-3 border border-blue-200 w-5/12">Nama Alat / Kegiatan</th>
+                            <th class="p-3 border border-blue-200 w-6/12">Prinsip Pesawat Sederhana</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-gray-700">
+                        <!-- Item 1 -->
+                        <tr>
+                            <td class="p-3 border border-gray-200 text-center font-bold">1</td>
+                            <td class="p-3 border border-gray-200">Gunting Kertas</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 1">Tuas Golongan 1 (Tumpu di tengah)</option>
+                                    <option value="Tuas 2">Tuas Golongan 2 (Beban di tengah)</option>
+                                    <option value="Tuas 3">Tuas Golongan 3 (Kuasa di tengah)</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                    <option value="Katrol Tetap">Katrol Tetap</option>
+                                    <option value="Roda Berporos">Roda Berporos</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 2 -->
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 text-center font-bold">2</td>
+                            <td class="p-3 border border-gray-200">Gerobak Pasir Roda Satu</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 1">Tuas Golongan 1</option>
+                                    <option value="Tuas 2">Tuas Golongan 2</option>
+                                    <option value="Tuas 3">Tuas Golongan 3</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                    <option value="Katrol Tetap">Katrol Tetap</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 3 -->
+                        <tr>
+                            <td class="p-3 border border-gray-200 text-center font-bold">3</td>
+                            <td class="p-3 border border-gray-200">Sekrup / Mur Baut</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 1">Tuas Golongan 1</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                    <option value="Katrol Tetap">Katrol Tetap</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 4 -->
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 text-center font-bold">4</td>
+                            <td class="p-3 border border-gray-200">Mengerek Bendera</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                    <option value="Katrol Tetap">Katrol Tetap</option>
+                                    <option value="Katrol Bergerak">Katrol Bergerak</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 5 -->
+                        <tr>
+                            <td class="p-3 border border-gray-200 text-center font-bold">5</td>
+                            <td class="p-3 border border-gray-200">Pinset / Penjepit Gorengan</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 2">Tuas Golongan 2</option>
+                                    <option value="Tuas 3">Tuas Golongan 3</option>
+                                    <option value="Katrol">Katrol</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 6 -->
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 text-center font-bold">6</td>
+                            <td class="p-3 border border-gray-200">Tangga Rumah</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas">Tuas</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                    <option value="Roda">Roda Berporos</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 7 -->
+                        <tr>
+                            <td class="p-3 border border-gray-200 text-center font-bold">7</td>
+                            <td class="p-3 border border-gray-200">Mobil Derek (Crane)</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Katrol Tetap">Katrol Tetap</option>
+                                    <option value="Katrol Majemuk">Katrol Majemuk</option>
+                                    <option value="Tuas">Tuas</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 8 -->
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 text-center font-bold">8</td>
+                            <td class="p-3 border border-gray-200">Pembuka Tutup Botol</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 1">Tuas Golongan 1</option>
+                                    <option value="Tuas 2">Tuas Golongan 2</option>
+                                    <option value="Tuas 3">Tuas Golongan 3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 9 -->
+                        <tr>
+                            <td class="p-3 border border-gray-200 text-center font-bold">9</td>
+                            <td class="p-3 border border-gray-200">Setir Kendaraan</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-gray-50 border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Roda Berporos">Roda Berporos</option>
+                                    <option value="Katrol">Katrol</option>
+                                    <option value="Bidang Miring">Bidang Miring</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Item 10 -->
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border border-gray-200 text-center font-bold">10</td>
+                            <td class="p-3 border border-gray-200">Cangkul</td>
+                            <td class="p-3 border border-gray-200">
+                                <select class="w-full p-2 bg-white border border-gray-300 rounded">
+                                    <option value="">-- Pilih Jawaban --</option>
+                                    <option value="Tuas 1">Tuas Golongan 1</option>
+                                    <option value="Tuas 2">Tuas Golongan 2</option>
+                                    <option value="Tuas 3">Tuas Golongan 3</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- KATEGORI 4: Flip Cards (Benar/Salah) -->
+        <section class="p-6">
+            <div class="flex items-center mb-4">
+                <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3">4</span>
+                <h2 class="text-xl font-bold text-gray-800">Kartu Analisis (Benar/Salah)</h2>
+            </div>
+            <p class="mb-4 text-gray-600 print:hidden">Klik kartu untuk membaca pernyataan lengkap, lalu tentukan apakah pernyataan tersebut Benar atau Salah di kolom input.</p>
+            <p class="mb-4 text-gray-600 hidden print:block">Tentukan apakah pernyataan berikut Benar atau Salah.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <!-- Card 1 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">1</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Semakin panjang bidang miring, gaya makin kecil.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Semakin panjang bidang miring, gaya kuasa yang dibutuhkan semakin kecil."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">2</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Katrol tetap memiliki KM = 2.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Katrol tetap memiliki keuntungan mekanis (KM) sebesar 2."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">3</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Pisau & Kapak adalah bidang miring.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Pisau, kapak, dan pahat adalah contoh alat yang menggunakan prinsip bidang miring."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">4</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Jungkat-jungkit adalah Tuas Gol 1.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Jungkat-jungkit termasuk contoh Tuas Golongan Pertama."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">5</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">KM Katrol Bergerak = 1.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Keuntungan mekanis (KM) dari katrol bergerak adalah 1."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">6</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Sekrup adalah jenis bidang miring.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Prinsip kerja sekrup sama dengan prinsip bidang miring."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                 <!-- Card 7 -->
+                 <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">7</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Tuas Gol 3, beban di tengah.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Pada tuas golongan ketiga, beban berada di antara titik tumpu dan kuasa."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                 <!-- Card 8 -->
+                 <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">8</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">KM Katrol majemuk = jumlah tali.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"KM katrol majemuk dihitung berdasarkan jumlah tali yang menopang beban."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                 <!-- Card 9 -->
+                 <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">9</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Katrol tetap hanya mengubah arah gaya.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Fungsi utama katrol tetap adalah mengubah arah gaya, bukan memperkecil gaya."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+
+                 <!-- Card 10 -->
+                 <div class="flex flex-col">
+                    <div class="flip-card mb-2" onclick="this.classList.toggle('active')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-sm bg-yellow-50 border-yellow-200">
+                                <span class="text-2xl font-bold text-yellow-600 mr-2">10</span>
+                                <span class="print:hidden">Klik untuk lihat soal</span>
+                                <span class="hidden print:inline">Jalan gunung = memperpendek jarak.</span>
+                            </div>
+                            <div class="flip-card-back text-xs px-2 flex-col">
+                                <p class="font-bold mb-1">Pernyataan:</p>
+                                <p>"Jalan di pegunungan dibuat berkelok-kelok bertujuan untuk memperpendek jarak tempuh."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="p-1 border rounded text-sm text-center font-bold text-gray-700 bg-gray-50">
+                        <option value="">- Jawab -</option>
+                        <option value="Benar">Benar</option>
+                        <option value="Salah">Salah</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Print Action -->
+        <footer class="p-6 bg-gray-100 text-center no-print border-t border-gray-200">
+            <p class="mb-4 text-gray-600">Pastikan semua jawaban telah terisi sebelum menyimpan.</p>
+            <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg flex items-center justify-center mx-auto transition-all">
+                <i class="fas fa-file-pdf mr-2"></i> Simpan sebagai PDF / Cetak
+            </button>
+            <p class="mt-2 text-xs text-gray-500">Pilih "Save as PDF" pada menu Destination saat jendela print terbuka.</p>
+        </footer>
+
+        <!-- Hidden signature area for print only -->
+        <div class="hidden print:block mt-10 px-8 pb-8">
+            <div class="flex justify-between mt-12">
+                <div class="text-center w-1/3">
+                    <p class="mb-16">Nilai</p>
+                    <div class="border-t border-black w-1/2 mx-auto"></div>
+                </div>
+                <div class="text-center w-1/3">
+                    <p class="mb-16">Guru IPA</p>
+                    <div class="border-t border-black w-2/3 mx-auto"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SECURITY SCRIPT -->
+    <script>
+        const LOCK_DURATION_MS = 3 * 60 * 1000; // 3 Menit
+        let alarmOscillator = null;
+        let alarmInterval = null;
+        let audioContext = null;
+
+        // Initialize Audio Context on first interaction
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        function playAlarm() {
+            if (!audioContext) initAudio();
+            
+            // Create oscillator
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.type = 'sawtooth';
+            // Siren effect
+            osc.frequency.setValueAtTime(600, audioContext.currentTime);
+            osc.frequency.linearRampToValueAtTime(900, audioContext.currentTime + 0.5);
+            osc.frequency.linearRampToValueAtTime(600, audioContext.currentTime + 1.0);
+
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.start();
+            
+            // Loop the siren every 1.5 seconds
+            alarmInterval = setInterval(() => {
+                 const osc2 = audioContext.createOscillator();
+                 const gain2 = audioContext.createGain();
+                 osc2.type = 'sawtooth';
+                 osc2.frequency.setValueAtTime(600, audioContext.currentTime);
+                 osc2.frequency.linearRampToValueAtTime(900, audioContext.currentTime + 0.5);
+                 osc2.frequency.linearRampToValueAtTime(600, audioContext.currentTime + 1.0);
+                 gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                 osc2.connect(gain2);
+                 gain2.connect(audioContext.destination);
+                 osc2.start();
+                 osc2.stop(audioContext.currentTime + 1.2);
+            }, 1500);
+        }
+
+        function stopAlarm() {
+            if (alarmInterval) clearInterval(alarmInterval);
+            if (audioContext) audioContext.suspend();
+        }
+
+        function lockScreen(endTime) {
+            const overlay = document.getElementById('lock-overlay');
+            const timerDisplay = document.getElementById('countdown');
+            overlay.style.display = 'flex';
+            
+            // Simpan waktu buka kunci di localStorage agar tahan refresh
+            localStorage.setItem('cheatLockUntil', endTime);
+            
+            playAlarm();
+
+            const timer = setInterval(() => {
+                const now = Date.now();
+                const diff = endTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(timer);
+                    stopAlarm();
+                    overlay.style.display = 'none';
+                    localStorage.removeItem('cheatLockUntil');
+                } else {
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    timerDisplay.textContent = 
+                        (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                        (seconds < 10 ? "0" + seconds : seconds);
+                }
+            }, 1000);
+        }
+
+        // Cek apakah sedang terkunci saat halaman dimuat (Anti-Refresh)
+        window.onload = function() {
+            const lockedUntil = localStorage.getItem('cheatLockUntil');
+            if (lockedUntil && parseInt(lockedUntil) > Date.now()) {
+                lockScreen(parseInt(lockedUntil));
+            }
+        };
+
+        // Deteksi Tab Switching / Minimize
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                // Jika user pindah tab, langsung kunci
+                const unlockTime = Date.now() + LOCK_DURATION_MS;
+                lockScreen(unlockTime);
+            }
+        });
+
+    </script>
+</body>
+</html>
